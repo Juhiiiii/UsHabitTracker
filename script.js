@@ -90,6 +90,7 @@ function createUsPointsBlock(day) {
     dot.dataset.points = item.points;
     dot.dataset.person = "us";
     dot.dataset.day = day;
+    dot.dataset.id = `${currentMonth}-${day}-us-${item.label}`;
 
     dot.addEventListener("click", () => {
       dot.classList.toggle("done");
@@ -139,6 +140,8 @@ function generateMonth(year, month) {
     `;
     dayDiv.appendChild(scoreRow);
     calendar.appendChild(dayDiv);
+    loadState();
+
   }
 }
 
@@ -189,3 +192,27 @@ function updateScores() {
   document.getElementById("you-total").innerText = youTotal;
   document.getElementById("us-total").innerText = usTotal;
 }
+
+function saveState() {
+  const state = {};
+
+  document.querySelectorAll(".habit-dot.done").forEach(dot => {
+    state[dot.dataset.id] = true;
+  });
+
+  localStorage.setItem("usTrackerState", JSON.stringify(state));
+}
+
+function loadState() {
+  const saved = JSON.parse(localStorage.getItem("usTrackerState")) || {};
+
+  document.querySelectorAll(".habit-dot").forEach(dot => {
+    if (saved[dot.dataset.id]) {
+      dot.classList.add("done");
+    }
+  });
+
+  updateScores();
+}
+
+
