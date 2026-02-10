@@ -125,9 +125,14 @@ function generateMonth(year, month) {
     dayDiv.appendChild(createPersonBlock("Ashish", day));
     dayDiv.appendChild(createPersonBlock("You", day));
     dayDiv.appendChild(createUsPointsBlock(day));
-
-
-
+    const scoreRow = document.createElement("div");
+    scoreRow.className = "day-score";
+    scoreRow.innerHTML = `
+      <span class="score-ashish">Ashish: 0</span>
+      <span class="score-you">You: 0</span>
+      <span class="score-us">Us: 0 💖</span>
+    `;
+    dayDiv.appendChild(scoreRow);
     calendar.appendChild(dayDiv);
   }
 }
@@ -135,20 +140,50 @@ function generateMonth(year, month) {
 generateMonth(2026, 1); // February (0-based)
 
 function updateScores() {
-  let ashish = 0;
-  let you = 0;
-  let us = 0;
+  let ashishTotal = 0;
+  let youTotal = 0;
+  let usTotal = 0;
+
+  // reset all day scores first
+  document.querySelectorAll(".day").forEach(dayDiv => {
+    dayDiv.querySelector(".score-ashish").innerText = "Ashish: 0";
+    dayDiv.querySelector(".score-you").innerText = "You: 0";
+    dayDiv.querySelector(".score-us").innerText = "Us: 0 💖";
+  });
 
   document.querySelectorAll(".habit-dot.done").forEach(dot => {
     const points = Number(dot.dataset.points);
     const person = dot.dataset.person;
+    const day = dot.dataset.day;
 
-    if (person === "ashish") ashish += points;
-    if (person === "you") you += points;
-    if (person === "us") us += points;
+    const dayDiv = document.querySelector(
+      `.day .date:nth-child(1)`
+    )?.parentElement;
+
+    const container = dot.closest(".day");
+    if (!container) return;
+
+    if (person === "ashish") {
+      ashishTotal += points;
+      const el = container.querySelector(".score-ashish");
+      el.innerText = `Ashish: ${Number(el.innerText.split(": ")[1]) + points}`;
+    }
+
+    if (person === "you") {
+      youTotal += points;
+      const el = container.querySelector(".score-you");
+      el.innerText = `You: ${Number(el.innerText.split(": ")[1]) + points}`;
+    }
+
+    if (person === "us") {
+      usTotal += points;
+      const el = container.querySelector(".score-us");
+      el.innerText = `Us: ${Number(el.innerText.split(": ")[1])} 💖`;
+      el.innerText = `Us: ${Number(el.innerText.match(/\d+/)[0]) + points} 💖`;
+    }
   });
 
-  document.getElementById("ashish-total").innerText = ashish;
-  document.getElementById("you-total").innerText = you;
-  document.getElementById("us-total").innerText = us;
+  document.getElementById("ashish-total").innerText = ashishTotal;
+  document.getElementById("you-total").innerText = youTotal;
+  document.getElementById("us-total").innerText = usTotal;
 }
