@@ -15,10 +15,21 @@ const usPoints = [
   { label: "Trip with Juhi", points: 500 }
 ];
 
+const habitPoints = {
+  "Workout": 10,
+  "Learning": 10,
+  "Sleep": 10,
+  "Steps": 10,
+  "No Sugar": 5,
+  "No Maida": 5,
+  "Meditation": 10
+};
+
 function createHabitDot(label) {
   const dot = document.createElement("span");
   dot.className = "habit-dot";
   dot.title = label;
+  dot.dataset.points = habitPoints[label] || 0;
 
   dot.addEventListener("click", () => {
     dot.classList.toggle("done");
@@ -63,6 +74,7 @@ function createUsPointsBlock() {
     const dot = document.createElement("span");
     dot.className = "habit-dot";
     dot.title = `${item.label} (+${item.points})`;
+    dot.dataset.points = item.points;
 
     dot.addEventListener("click", () => {
       dot.classList.toggle("done");
