@@ -121,3 +121,34 @@ function generateMonth(year, month) {
 }
 
 generateMonth(2026, 1); // February (0-based)
+
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("dot")) {
+    e.target.classList.toggle("active");
+    updateScores();
+  }
+});
+
+function updateScores() {
+  let ashishTotal = 0;
+  let youTotal = 0;
+  let usTotal = 0;
+
+  const days = document.querySelectorAll(".day-card");
+
+  days.forEach(day => {
+    let ashishDay = day.querySelectorAll('.dot[data-person="ashish"].active').length;
+    let youDay = day.querySelectorAll('.dot[data-person="you"].active').length;
+    let usDay = day.querySelectorAll('.dot[data-person="us"].active').length;
+
+    // Save per-day display (optional – next step enhancement)
+    ashishTotal += ashishDay;
+    youTotal += youDay;
+    usTotal += usDay;
+  });
+
+  document.getElementById("ashish-total").innerText = ashishTotal;
+  document.getElementById("you-total").innerText = youTotal;
+  document.getElementById("us-total").innerText = usTotal;
+}
+
