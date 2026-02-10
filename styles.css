@@ -21,3 +21,45 @@ body {
   font-size: 14px;
 }
 
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+}
+
+.day {
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.day.today {
+  border: 2px solid #ff6b9a;
+  background: #fff0f6;
+}
+
+.date {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.person {
+  margin-bottom: 4px;
+}
+
+.person-name {
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.habits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
