@@ -44,7 +44,7 @@ function createHabitDot(label, person, day) {
 
 
 
-function createPersonBlock(name) {
+function createPersonBlock(name, day) {
   const wrapper = document.createElement("div");
   wrapper.className = "person";
 
