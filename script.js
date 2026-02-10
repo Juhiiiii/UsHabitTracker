@@ -10,6 +10,11 @@ const habits = [
   "Meditation"
 ];
 
+const usPoints = [
+  { label: "FaceTime Juhi", points: 100 },
+  { label: "Trip with Juhi", points: 500 }
+];
+
 function createHabitDot(label) {
   const dot = document.createElement("span");
   dot.className = "habit-dot";
@@ -43,6 +48,34 @@ function createPersonBlock(name) {
   return wrapper;
 }
 
+function createUsPointsBlock() {
+  const wrapper = document.createElement("div");
+  wrapper.className = "us-points";
+
+  const title = document.createElement("div");
+  title.className = "us-title";
+  title.innerText = "Us Points 💖";
+
+  const dots = document.createElement("div");
+  dots.className = "habits";
+
+  usPoints.forEach(item => {
+    const dot = document.createElement("span");
+    dot.className = "habit-dot";
+    dot.title = `${item.label} (+${item.points})`;
+
+    dot.addEventListener("click", () => {
+      dot.classList.toggle("done");
+    });
+
+    dots.appendChild(dot);
+  });
+
+  wrapper.appendChild(title);
+  wrapper.appendChild(dots);
+  return wrapper;
+}
+
 function generateMonth(year, month) {
   calendar.innerHTML = "";
 
@@ -68,6 +101,8 @@ function generateMonth(year, month) {
     dayDiv.appendChild(dateLabel);
     dayDiv.appendChild(createPersonBlock("Ashish"));
     dayDiv.appendChild(createPersonBlock("You"));
+    dayDiv.appendChild(createUsPointsBlock());
+
 
     calendar.appendChild(dayDiv);
   }
