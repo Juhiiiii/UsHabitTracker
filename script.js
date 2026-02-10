@@ -66,7 +66,7 @@ function createPersonBlock(name, day) {
   return wrapper;
 }
 
-function createUsPointsBlock() {
+function createUsPointsBlock(day) {
   const wrapper = document.createElement("div");
   wrapper.className = "us-points";
 
