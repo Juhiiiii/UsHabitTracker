@@ -34,9 +34,9 @@ body {
 
 .day {
   border: 1px solid #ddd;
-  padding: 8px;
+  padding: 6px;
   border-radius: 8px;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .day.today {
@@ -63,3 +63,17 @@ body {
   flex-wrap: wrap;
   gap: 4px;
 }
+
+.habit-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid #aaa;
+  cursor: pointer;
+}
+
+.habit-dot.done {
+  background-color: #ff6b9a;
+  border-color: #ff6b9a;
+}
+
