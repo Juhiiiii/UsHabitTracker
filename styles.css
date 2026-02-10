@@ -96,4 +96,18 @@ body {
   color: #ff6b9a;
   margin-bottom: 4px;
 }
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #aaa;
+  display: inline-block;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.dot.active {
+  background-color: #ff4d88;
+  border-color: #ff4d88;
+}
 
