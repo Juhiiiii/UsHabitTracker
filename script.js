@@ -144,45 +144,42 @@ function updateScores() {
   let youTotal = 0;
   let usTotal = 0;
 
-  // reset all day scores first
+  // Reset all per-day scores
   document.querySelectorAll(".day").forEach(dayDiv => {
     dayDiv.querySelector(".score-ashish").innerText = "Ashish: 0";
     dayDiv.querySelector(".score-you").innerText = "You: 0";
     dayDiv.querySelector(".score-us").innerText = "Us: 0 💖";
   });
 
+  // Loop through ALL completed dots
   document.querySelectorAll(".habit-dot.done").forEach(dot => {
     const points = Number(dot.dataset.points);
     const person = dot.dataset.person;
-    const day = dot.dataset.day;
 
-    const dayDiv = document.querySelector(
-      `.day .date:nth-child(1)`
-    )?.parentElement;
-
-    const container = dot.closest(".day");
-    if (!container) return;
+    const dayDiv = dot.closest(".day");
+    if (!dayDiv) return;
 
     if (person === "ashish") {
       ashishTotal += points;
-      const el = container.querySelector(".score-ashish");
+      const el = dayDiv.querySelector(".score-ashish");
       el.innerText = `Ashish: ${Number(el.innerText.split(": ")[1]) + points}`;
     }
 
     if (person === "you") {
       youTotal += points;
-      const el = container.querySelector(".score-you");
+      const el = dayDiv.querySelector(".score-you");
       el.innerText = `You: ${Number(el.innerText.split(": ")[1]) + points}`;
     }
 
     if (person === "us") {
       usTotal += points;
-      const el = container.querySelector(".score-us");
-      el.innerText = `Us: ${Number(el.innerText.split(": ")[1])} 💖`;
-      el.innerText = `Us: ${Number(el.innerText.match(/\d+/)[0]) + points} 💖`;
+      const el = dayDiv.querySelector(".score-us");
+      const current = Number(el.innerText.match(/\d+/)[0]);
+      el.innerText = `Us: ${current + points} 💖`;
     }
   });
 
+  // Monthly totals
   document.getElementById("ashish-total").innerText = ashishTotal;
   document.getElementById("you-total").innerText = youTotal;
   document.getElementById("us-total").innerText = usTotal;
