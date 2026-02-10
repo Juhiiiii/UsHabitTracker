@@ -34,13 +34,18 @@ function createHabitDot(label, person, day) {
   dot.dataset.person = person;
   dot.dataset.day = day;
 
+  // 🔑 unique id for persistence
+  dot.dataset.id = `${currentMonth}-${day}-${person}-${label}`;
+
   dot.addEventListener("click", () => {
     dot.classList.toggle("done");
+    saveState();
     updateScores();
   });
 
   return dot;
 }
+
 
 
 
