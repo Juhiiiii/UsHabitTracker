@@ -111,3 +111,16 @@ body {
   border-color: #ff4d88;
 }
 
+.day-score {
+  margin-top: 6px;
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+  color: #555;
+}
+
+.score-us {
+  color: #ff6b9a;
+  font-weight: 600;
+}
+
