@@ -10,12 +10,18 @@ const habits = [
   "Meditation"
 ];
 
-function createHabitCheckbox(label) {
-  const input = document.createElement("input");
-  input.type = "checkbox";
-  input.title = label;
-  return input;
+function createHabitDot(label) {
+  const dot = document.createElement("span");
+  dot.className = "habit-dot";
+  dot.title = label;
+
+  dot.addEventListener("click", () => {
+    dot.classList.toggle("done");
+  });
+
+  return dot;
 }
+
 
 function createPersonBlock(name) {
   const wrapper = document.createElement("div");
@@ -29,7 +35,7 @@ function createPersonBlock(name) {
   habitsDiv.className = "habits";
 
   habits.forEach(habit => {
-    habitsDiv.appendChild(createHabitCheckbox(habit));
+    habitsDiv.appendChild(createHabitDot(habit));
   });
 
   wrapper.appendChild(title);
