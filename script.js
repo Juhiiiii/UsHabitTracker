@@ -1,4 +1,7 @@
 const calendar = document.getElementById("calendar");
+const year = 2026;
+const month = 1; // February (0-based)
+const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
 
 const habits = [
   "Workout",
@@ -140,12 +143,13 @@ function generateMonth(year, month) {
     `;
     dayDiv.appendChild(scoreRow);
     calendar.appendChild(dayDiv);
-    loadState();
+    
 
   }
+  loadState();
 }
 
-generateMonth(2026, 1); // February (0-based)
+generateMonth(year, month); // February (0-based)
 
 function updateScores() {
   let ashishTotal = 0;
