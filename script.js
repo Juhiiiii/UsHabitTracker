@@ -25,18 +25,23 @@ const habitPoints = {
   "Meditation": 10
 };
 
-function createHabitDot(label) {
+function createHabitDot(label, person, day) {
   const dot = document.createElement("span");
   dot.className = "habit-dot";
   dot.title = label;
+
   dot.dataset.points = habitPoints[label] || 0;
+  dot.dataset.person = person;
+  dot.dataset.day = day;
 
   dot.addEventListener("click", () => {
     dot.classList.toggle("done");
+    updateScores();
   });
 
   return dot;
 }
+
 
 
 function createPersonBlock(name) {
@@ -51,7 +56,9 @@ function createPersonBlock(name) {
   habitsDiv.className = "habits";
 
   habits.forEach(habit => {
-    habitsDiv.appendChild(createHabitDot(habit));
+    habitsDiv.appendChild(
+      createHabitDot(habit, name.toLowerCase(), day)
+    );
   });
 
   wrapper.appendChild(title);
@@ -74,10 +81,14 @@ function createUsPointsBlock() {
     const dot = document.createElement("span");
     dot.className = "habit-dot";
     dot.title = `${item.label} (+${item.points})`;
+    
     dot.dataset.points = item.points;
+    dot.dataset.person = "us";
+    dot.dataset.day = day;
 
     dot.addEventListener("click", () => {
       dot.classList.toggle("done");
+      updateScores();
     });
 
     dots.appendChild(dot);
@@ -111,9 +122,10 @@ function generateMonth(year, month) {
     dateLabel.innerText = day;
 
     dayDiv.appendChild(dateLabel);
-    dayDiv.appendChild(createPersonBlock("Ashish"));
-    dayDiv.appendChild(createPersonBlock("You"));
-    dayDiv.appendChild(createUsPointsBlock());
+    dayDiv.appendChild(createPersonBlock("Ashish", day));
+    dayDiv.appendChild(createPersonBlock("You", day));
+    dayDiv.appendChild(createUsPointsBlock(day));
+
 
 
     calendar.appendChild(dayDiv);
@@ -122,33 +134,21 @@ function generateMonth(year, month) {
 
 generateMonth(2026, 1); // February (0-based)
 
-document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("dot")) {
-    e.target.classList.toggle("active");
-    updateScores();
-  }
-});
-
 function updateScores() {
-  let ashishTotal = 0;
-  let youTotal = 0;
-  let usTotal = 0;
+  let ashish = 0;
+  let you = 0;
+  let us = 0;
 
-  const days = document.querySelectorAll(".day-card");
+  document.querySelectorAll(".habit-dot.done").forEach(dot => {
+    const points = Number(dot.dataset.points);
+    const person = dot.dataset.person;
 
-  days.forEach(day => {
-    let ashishDay = day.querySelectorAll('.dot[data-person="ashish"].active').length;
-    let youDay = day.querySelectorAll('.dot[data-person="you"].active').length;
-    let usDay = day.querySelectorAll('.dot[data-person="us"].active').length;
-
-    // Save per-day display (optional – next step enhancement)
-    ashishTotal += ashishDay;
-    youTotal += youDay;
-    usTotal += usDay;
+    if (person === "ashish") ashish += points;
+    if (person === "you") you += points;
+    if (person === "us") us += points;
   });
 
-  document.getElementById("ashish-total").innerText = ashishTotal;
-  document.getElementById("you-total").innerText = youTotal;
-  document.getElementById("us-total").innerText = usTotal;
+  document.getElementById("ashish-total").innerText = ashish;
+  document.getElementById("you-total").innerText = you;
+  document.getElementById("us-total").innerText = us;
 }
-
