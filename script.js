@@ -226,6 +226,7 @@ function loadState() {
       if (doc.exists) {
         state = doc.data();
       }
+      updateMonthLabel();
       generateMonth(year, month);  // Always render
       if (state.completed) {
         Object.keys(state.completed).forEach(id => {
@@ -242,5 +243,20 @@ function loadState() {
       generateMonth(year, month);  // Still render even if error
     });
 }
+
+function updateMonthLabel() {
+  const options = { month: "long", year: "numeric" };
+  document.getElementById("monthLabel").textContent =
+    currentDate.toLocaleDateString("en-US", options);
+}
+document.getElementById("prevMonth").addEventListener("click", () => {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  loadState();
+});
+
+document.getElementById("nextMonth").addEventListener("click", () => {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  loadState();
+});
 
 loadState();
