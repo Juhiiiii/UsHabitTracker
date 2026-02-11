@@ -211,8 +211,13 @@ function loadState() {
     .then((doc) => {
       if (doc.exists) {
         state = doc.data();
-        generateMonth();
       }
+      generateMonth();  // Always render
+    })
+    .catch((error) => {
+      console.error("Error loading state:", error);
+      generateMonth();  // Still render even if error
     });
 }
+
 loadState();
