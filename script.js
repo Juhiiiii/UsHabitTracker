@@ -146,6 +146,8 @@ function generateMonth(year, month) {
     
 
   }
+  updateScores();
+
 }
 
 // generateMonth(year, month); // February (0-based)
