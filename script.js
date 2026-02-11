@@ -2,10 +2,7 @@ let state = {};
 
 const calendar = document.getElementById("calendar");
 let currentDate = new Date(2026, 1); // Start at Feb 2026
-const year = currentDate.getFullYear();
-const month = currentDate.getMonth();
 
-const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
 
 
 const habits = [
@@ -43,7 +40,12 @@ function createHabitDot(label, person, day) {
   dot.dataset.day = day;
 
   // 🔑 unique id for persistence
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
+  
   dot.dataset.id = `${currentMonth}-${day}-${person}-${label}`;
+
 
   dot.addEventListener("click", () => {
     dot.classList.toggle("done");
@@ -98,7 +100,12 @@ function createUsPointsBlock(day) {
     dot.dataset.points = item.points;
     dot.dataset.person = "us";
     dot.dataset.day = day;
-    dot.dataset.id = `${currentMonth}-${day}-us-${item.label}`;
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
+    
+    dot.dataset.id = `${currentMonth}-${day}-${person}-${label}`;
+
 
     dot.addEventListener("click", () => {
       dot.classList.toggle("done");
@@ -204,6 +211,9 @@ function updateScores() {
 }
 
 function saveState() {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
   const completed = {};
 
   document.querySelectorAll(".habit-dot.done").forEach(dot => {
@@ -219,13 +229,20 @@ function saveState() {
 
 
 function loadState() {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
+  
   db.collection("us-tracker")
     .doc(currentMonth)
     .get()
     .then((doc) => {
       if (doc.exists) {
         state = doc.data();
-      }
+      } else {
+        state = {};
+      } 
+      
       updateMonthLabel();
       generateMonth(year, month);  // Always render
       if (state.completed) {
