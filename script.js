@@ -30,6 +30,14 @@ const habitPoints = {
   "Meditation": 10
 };
 
+function getCurrentMonthInfo() {
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
+
+  return { year, month, currentMonth };
+}
+
 function createHabitDot(label, person, day) {
   const dot = document.createElement("span");
   dot.className = "habit-dot";
@@ -44,7 +52,9 @@ function createHabitDot(label, person, day) {
   const month = currentDate.getMonth();
   const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
   
+  const { currentMonth } = getCurrentMonthInfo();
   dot.dataset.id = `${currentMonth}-${day}-${person}-${label}`;
+
 
 
   dot.addEventListener("click", () => {
@@ -211,9 +221,8 @@ function updateScores() {
 }
 
 function saveState() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
+  const { currentMonth } = getCurrentMonthInfo();
+
   const completed = {};
 
   document.querySelectorAll(".habit-dot.done").forEach(dot => {
@@ -229,35 +238,29 @@ function saveState() {
 
 
 function loadState() {
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
-  
+  const { year, month, currentMonth } = getCurrentMonthInfo();
+
   db.collection("us-tracker")
     .doc(currentMonth)
     .get()
     .then((doc) => {
-      if (doc.exists) {
-        state = doc.data();
-      } else {
-        state = {};
-      } 
-      
+      state = doc.exists ? doc.data() : {};
+
       updateMonthLabel();
-      generateMonth(year, month);  // Always render
+      generateMonth(year, month);
+
       if (state.completed) {
         Object.keys(state.completed).forEach(id => {
           const dot = document.querySelector(`[data-id="${id}"]`);
           if (dot) dot.classList.add("done");
         });
       }
-      
-      updateScores();
 
+      updateScores();
     })
     .catch((error) => {
       console.error("Error loading state:", error);
-      generateMonth(year, month);  // Still render even if error
+      generateMonth(year, month);
     });
 }
 
