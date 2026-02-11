@@ -48,14 +48,8 @@ function createHabitDot(label, person, day) {
   dot.dataset.day = day;
 
   // 🔑 unique id for persistence
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
-  
   const { currentMonth } = getCurrentMonthInfo();
   dot.dataset.id = `${currentMonth}-${day}-${person}-${label}`;
-
-
 
   dot.addEventListener("click", () => {
     dot.classList.toggle("done");
@@ -110,12 +104,9 @@ function createUsPointsBlock(day) {
     dot.dataset.points = item.points;
     dot.dataset.person = "us";
     dot.dataset.day = day;
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
     
-    dot.dataset.id = `${currentMonth}-${day}-${person}-${label}`;
-
+    const { currentMonth } = getCurrentMonthInfo();
+    dot.dataset.id = `${currentMonth}-${day}-us-${item.label}`;
 
     dot.addEventListener("click", () => {
       dot.classList.toggle("done");
