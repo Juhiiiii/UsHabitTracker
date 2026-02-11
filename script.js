@@ -146,7 +146,6 @@ function generateMonth(year, month) {
     
 
   }
-  loadState();
 }
 
 // generateMonth(year, month); // February (0-based)
@@ -212,11 +211,11 @@ function loadState() {
       if (doc.exists) {
         state = doc.data();
       }
-      generateMonth();  // Always render
+      generateMonth(year, month);  // Always render
     })
     .catch((error) => {
       console.error("Error loading state:", error);
-      generateMonth();  // Still render even if error
+      generateMonth(year, month);  // Still render even if error
     });
 }
 
