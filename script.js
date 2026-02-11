@@ -1,9 +1,12 @@
 let state = {};
 
 const calendar = document.getElementById("calendar");
-const year = 2026;
-const month = 1; // February (0-based)
+let currentDate = new Date(2026, 1); // Start at Feb 2026
+const year = currentDate.getFullYear();
+const month = currentDate.getMonth();
+
 const currentMonth = `${year}-${String(month + 1).padStart(2, "0")}`;
+
 
 const habits = [
   "Workout",
@@ -210,14 +213,14 @@ function saveState() {
   state = { completed };
 
   db.collection("us-tracker")
-    .doc("shared")
+    .doc(currentMonth)
     .set(state);
 }
 
 
 function loadState() {
   db.collection("us-tracker")
-    .doc("shared")
+    .doc(currentMonth)
     .get()
     .then((doc) => {
       if (doc.exists) {
