@@ -149,7 +149,7 @@ function generateMonth(year, month) {
   loadState();
 }
 
-generateMonth(year, month); // February (0-based)
+// generateMonth(year, month); // February (0-based)
 
 function updateScores() {
   let ashishTotal = 0;
@@ -198,25 +198,21 @@ function updateScores() {
 }
 
 function saveState() {
-  const state = {};
-
-  document.querySelectorAll(".habit-dot.done").forEach(dot => {
-    state[dot.dataset.id] = true;
-  });
-
-  localStorage.setItem("usTrackerState", JSON.stringify(state));
+  db.collection("us-tracker")
+    .doc("shared")
+    .set(state);
 }
+
 
 function loadState() {
-  const saved = JSON.parse(localStorage.getItem("usTrackerState")) || {};
-
-  document.querySelectorAll(".habit-dot").forEach(dot => {
-    if (saved[dot.dataset.id]) {
-      dot.classList.add("done");
-    }
-  });
-
-  updateScores();
+  db.collection("us-tracker")
+    .doc("shared")
+    .get()
+    .then((doc) => {
+      if (doc.exists) {
+        state = doc.data();
+        generateMonth();
+      }
+    });
 }
-
-
+loadState();
