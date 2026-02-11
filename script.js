@@ -1,3 +1,5 @@
+let state = {};
+
 const calendar = document.getElementById("calendar");
 const year = 2026;
 const month = 1; // February (0-based)
@@ -199,6 +201,14 @@ function updateScores() {
 }
 
 function saveState() {
+  const completed = {};
+
+  document.querySelectorAll(".habit-dot.done").forEach(dot => {
+    completed[dot.dataset.id] = true;
+  });
+
+  state = { completed };
+
   db.collection("us-tracker")
     .doc("shared")
     .set(state);
@@ -214,6 +224,15 @@ function loadState() {
         state = doc.data();
       }
       generateMonth(year, month);  // Always render
+      if (state.completed) {
+        Object.keys(state.completed).forEach(id => {
+          const dot = document.querySelector(`[data-id="${id}"]`);
+          if (dot) dot.classList.add("done");
+        });
+      }
+      
+      updateScores();
+
     })
     .catch((error) => {
       console.error("Error loading state:", error);
