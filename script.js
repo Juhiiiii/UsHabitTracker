@@ -1,7 +1,7 @@
 let state = {};
 
 const calendar = document.getElementById("calendar");
-let currentDate = new Date(2026, 1); // Start at Feb 2026
+let currentDate = new Date(); // Start at Feb 2026
 
 
 
